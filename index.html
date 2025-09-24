@@ -5,51 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Introduce Myself</title>
   <link rel="stylesheet" href="./assets/css/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="backgroundLayer" class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card d-inline-block rounded-3 shadow">
-      <div class="card-body">
-        <div class="row-auto d-flex flex-row gap-5 align-items-center">
-          <div class="col-auto">
-            <img id="profilePicture" src="./assets/img/Profil Github.jpg" class="rounded-circle" alt="profile picture">
-          </div>
-          <div class="col-auto d-flex flex-column gap-3">
-            <h2 class="mb-0">Muhammad Rayhan Permana</h2>
-            <div class="d-flex flex-column gap-2">
-              <div class="d-flex align-items-center gap-2">
-                <div id="iconBox" class="d-flex justify-content-center align-items-center">
-                  <i class="fa-solid fa-location-dot"></i>
-                </div>
-                <span>Tasikmalaya, Jawa Barat</span>
-              </div>
-
-              <div class="d-flex align-items-center gap-2">
-                <div id="iconBox" class="d-flex justify-content-center align-items-center">
-                  <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <span>Informatika, Universitas Teknologi Yogyakarta</span>
-              </div>
-            </div>
-            <div class="row-auto d-flex flex-row gap-3 mt-3">
-              <a href="https://github.com/ImHans09" class="text-dark">
-                <i class="fa-brands fa-github fa-xl"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/rayhan-permana" class="text-dark">
-                <i class="fa-brands fa-linkedin fa-xl"></i>
-              </a>
-              <a href="https://www.instagram.com/im.hans__" class="text-dark">
-                <i class="fa-brands fa-square-instagram fa-xl"></i>
-              </a>
+  <nav>
+    <a href="#" class="nav-link">Home</a>
+    <a href="#" class="active nav-link">About</a>
+  </nav>
+  <section>
+    <div class="biodata-card">
+      <div class="biodata-content">
+        <h2 class="biodata-title">Hi! Welcome to my website</h2>
+        <p class="biodata-description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque quas officiis voluptatibus nulla, nemo cupiditate amet adipisci, beatae nam maxime optio impedit facere quod fuga earum quam exercitationem culpa enim. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit nulla vitae accusantium consequuntur voluptatum labore veritatis totam necessitatibus rerum nostrum, nisi quia perspiciatis quas, sed autem dolore debitis eveniet obcaecati? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id modi minima hic ducimus repellendus delectus iure laudantium molestias, doloremque ea? Quisquam optio, cupiditate doloribus expedita harum adipisci inventore illum suscipit?</p>
+        <div class="biodata-button">
+          <a href="#" class="contact-button">Contact</a>
+          <a href="#" class="download-cv-button">
+            <span>Download CV</span>
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </div>
+        <div class="biodata-social">
+          <a href="#" class="biodata-social-item">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="#" class="biodata-social-item">
+            <i class="fa-brands fa-square-github"></i>
+          </a>
+          <a href="#" class="biodata-social-item">
+            <i class="fa-brands fa-square-instagram"></i>
+          </a>
+          <a href="#" class="biodata-social-item">
+            <i class="fa-brands fa-square-x-twitter"></i>
+          </a>
+        </div>
+        <div class="photo-box">
+          <div class="photo-card">
+            <img class="photo" src="./assets/img/Profil Github.jpg" alt="">
+            <div class="photo-label">
+              <h3 class="photo-name">Muhammad Rayhan Permana</h3>
+              <span class="photo-description">Fullstack Developer</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  
+  </section>
   <script src="script.js"></script>
 </body>
 </html>
