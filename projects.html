@@ -21,9 +21,6 @@
       </button>
       <div id="navbarToggler" class="collapse navbar-collapse ms-md-5">
         <ul class="navbar-nav gap-1 mt-3 mt-md-0 mb-3 mb-md-0 me-auto">
-          <!-- <li class="nav-item px-2 py-md-3">
-            <a href="/" class="nav-link">Home</a>
-          </li> -->
           <li class="nav-item nav-active px-2 py-md-3">
             <a href="/projects.html" class="nav-link">Projects</a>
           </li>
@@ -53,21 +50,21 @@
               <fieldset form="addProjectForm" class="d-flex flex-column gap-4">
                 <div class="d-flex flex-column gap-1">
                   <label for="projectNameTextInput">Project Name</label>
-                  <input id="projectNameTextInput" type="text" class="form-control" placeholder="What's your new project name?" name="Project Name" aria-label="Project Name" required>
+                  <input id="projectNameTextInput" type="text" class="form-control" placeholder="What's your new project name?" name="name" aria-label="Project Name" required>
                 </div>
                 <div class="col row-sm d-flex flex-column flex-sm-row gap-4 gap-sm-3">
                   <div class="col-sm d-flex flex-column gap-1">
                     <label for="projectStartDate">Start Date</label>
-                    <input id="projectStartDate" type="date" class="form-control" name="Project Start Date" aria-label="Project Start Date" required>
+                    <input id="projectStartDate" type="date" class="form-control" name="startDate" aria-label="Project Start Date" required>
                   </div>
                   <div class="col-sm d-flex flex-column gap-1">
                     <label for="projectEndDate">End Date</label>
-                    <input id="projectEndDate" type="date" class="form-control" name="Project End Date" aria-label="Project End Date" required>
+                    <input id="projectEndDate" type="date" class="form-control" name="endDate" aria-label="Project End Date" required>
                   </div>
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label for="projectDescriptionTextInput">Description</label>
-                  <textarea id="projectDescriptionTextInput" class="form-control" placeholder="Write your project description here..." name="Project Description" aria-label="Project Description" required></textarea>
+                  <textarea id="projectDescriptionTextInput" class="form-control" placeholder="Write your project description here..." name="description" aria-label="Project Description" required></textarea>
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label>Techonlogies</label>
@@ -75,39 +72,39 @@
                     <div class="col d-flex flex-column gap-1">
                       <div class="form-check">
                         <label for="checkNodeJs" class="form-check-label">Node JS</label>
-                        <input id="checkNodeJs" type="checkbox" value="Node JS" class="form-check-input" aria-label="Node JS">
+                        <input id="checkNodeJs" type="checkbox" name="technologies" value="Node JS" class="form-check-input" aria-label="Node JS">
                       </div>
                       <div class="form-check">
                         <label for="checkLaravel" class="form-check-label">Laravel</label>
-                        <input id="checkLaravel" type="checkbox" value="Laravel" class="form-check-input" aria-label="Laravel">
+                        <input id="checkLaravel" type="checkbox" name="technologies" value="Laravel" class="form-check-input" aria-label="Laravel">
                       </div>
                       <div class="form-check">
                         <label for="checkDjango" class="form-check-label">Django</label>
-                        <input id="checkDjango" type="checkbox" value="Django" class="form-check-input" aria-label="Django">
+                        <input id="checkDjango" type="checkbox" name="technologies" value="Django" class="form-check-input" aria-label="Django">
                       </div>
                     </div>
                     <div class="col d-flex flex-column gap-1">
                       <div class="form-check">
                         <label for="checkReactJs" class="form-check-label">React JS</label>
-                        <input id="checkReactJs" type="checkbox" value="React JS" class="form-check-input" aria-label="React JS">
+                        <input id="checkReactJs" type="checkbox" name="technologies" value="React JS" class="form-check-input" aria-label="React JS">
                       </div>
                       <div class="form-check">
                         <label for="checkVueJS" class="form-check-label">Vue JS</label>
-                        <input id="checkVueJS" type="checkbox" value="Vue JS" class="form-check-input" aria-label="Vue JS">
+                        <input id="checkVueJS" type="checkbox" name="technologies" value="Vue JS" class="form-check-input" aria-label="Vue JS">
                       </div>
                       <div class="form-check">
                         <label for="checkAngularJS" class="form-check-label">Angular JS</label>
-                        <input id="checkAngularJS" type="checkbox" value="Angular JS" class="form-check-input" aria-label="Angular JS">
+                        <input id="checkAngularJS" type="checkbox" name="technologies" value="Angular JS" class="form-check-input" aria-label="Angular JS">
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="d-flex flex-column gap-1">
-                  <label for="projectImageFileInput">Project Name</label>
-                  <input id="projectImageFileInput" type="file" accept="image/jpg, image/png, image/jpeg" class="form-control" name="Project Image" aria-label="Project Image" required>
+                  <label for="projectImageFileInput">Project Image</label>
+                  <input id="projectImageFileInput" type="file" accept="image/jpg, image/png, image/jpeg" class="form-control" name="imagePath" aria-label="Project Image" required>
                 </div>
                 <div class="d-grid">
-                  <button id="submitContactButton" type="submit" class="btn btn-primary fw-semibold mb-2">Submit</button>
+                  <button id="submitProjectButton" type="submit" class="btn btn-primary fw-semibold mb-2">Submit</button>
                 </div>
               </fieldset>
             </form>

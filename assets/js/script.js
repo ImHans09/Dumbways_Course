@@ -34,7 +34,7 @@ const projects = [
   {
     id: 5,
     name: "Learning Management System",
-    year: 2020,
+    year: "2020",
     duration: 8,
     description: "An e-learning platform with online courses, interactive quizzes, and discussion forums. The system also provides digital certificates for participants.",
     image_url: "/assets/images/sample_academic_information_system.png"
@@ -48,9 +48,66 @@ const projects = [
     image_url: "/assets/images/sample_academic_information_system.png"
   }
 ];
-
-
 const projectCardContainer = document.getElementById('projectCardContainer');
+
+// Method for counting project duration in day
+function countProjectDuration(startDateInMillis, endDateInMillis) {
+  const millisInSingleDay = 1000 * 60 * 60 * 24;
+  const differenceInMillis = Math.abs(endDateInMillis - startDateInMillis);
+  const projectDuration = differenceInMillis / millisInSingleDay;
+
+  return Math.round(projectDuration);
+}
+
+// Method for retrieving project technologies
+function getProjectTechnologies(checkboxes) {
+  const checkedValues = [];
+  
+  checkboxes.forEach((checkbox) => {
+    checkedValues.push(checkbox.value);
+  });
+
+  return checkedValues;
+}
+
+// Method for submitting the new project data
+function submitNewProject(form) {
+  const projectNameInput = document.getElementById('projectNameTextInput');
+  const projectStartDateInput = document.getElementById('projectStartDate');
+  const projectEndDateInput = document.getElementById('projectEndDate');
+  const projectDescription = document.getElementById('projectDescriptionTextInput');
+  const projectTechnologiesCheckboxes = form.querySelectorAll('input[name="technologies"]:checked');
+  const projectImage = form.querySelector('input[name="imagePath"]');
+  const startDateAsNumber = projectStartDateInput.valueAsNumber;
+  const endDateAsNumber = projectEndDateInput.valueAsNumber;
+  const projectDurationInDays = countProjectDuration(startDateAsNumber, endDateAsNumber);
+  const projectTechnologies = getProjectTechnologies(projectTechnologiesCheckboxes);
+  const projectData = {
+    id: projects.length + 1,
+    name: projectNameInput.value,
+    startDate: projectStartDateInput.value,
+    endDate: projectEndDateInput.value,
+    duration: projectDurationInDays,
+    description: projectDescription.value,
+    technologies: projectTechnologies,
+    imagePath: projectImage.value
+  };
+
+  projects.push(projectData);
+  console.log(`Projects: ${JSON.stringify(projects)}`);
+  alert(`Add ${projectNameInput.value} successfully!`);
+}
+
+// Loading DOM Content to access several input fields
+document.addEventListener('DOMContentLoaded', () => {
+  const addProjectForm = document.getElementById('addProjectForm');
+  
+  addProjectForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    submitNewProject(addProjectForm);
+  });
+});
 
 projects.forEach((project) => {
   const projectCard = document.createElement('div');
