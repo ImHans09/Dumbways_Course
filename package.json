@@ -1,0 +1,28 @@
+{
+  "name": "dumbways_course",
+  "version": "1.0.0",
+  "description": "Project for learning full-stack web development through Dubmways Bootcamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImHans09/Dumbways_Course.git"
+  },
+  "author": "Muhammad Rayhan Permana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ImHans09/Dumbways_Course/issues"
+  },
+  "homepage": "https://github.com/ImHans09/Dumbways_Course#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  }
+}
