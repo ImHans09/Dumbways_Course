@@ -69,6 +69,13 @@ app.post('/add-project', (req, res) => {
   res.redirect('projects');
 });
 
+// Route to Detail Project Page
+app.get('/detail-project/:id', (req, res) => {
+  const project = projects.find((project) => project.id === Number(req.params.id));
+
+  res.render('detail_project', { project });
+});
+
 // Route to Contact Page
 app.get('/contact', (req, res) => {
   const data = {
@@ -79,11 +86,12 @@ app.get('/contact', (req, res) => {
   res.render('contact', data)
 });
 
-// Route to Detail Project Page
-app.get('/detail-project/:id', (req, res) => {
-  const project = projects.find((project) => project.id === Number(req.params.id));
+// Route for sending message
+app.post('/send-message', (req, res) => {
+  const messageData = req.body;
+  console.log(`Name: ${messageData.username}\nEmail: ${messageData.email}\nPhone Number: ${messageData.phoneNumber}\nSubject: ${messageData.subject}\nMessage: ${messageData.message}`);
 
-  res.render('detail_project', { project });
+  res.redirect('contact');
 });
 
 // Run the application
