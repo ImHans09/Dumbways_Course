@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 <body>
   <nav class="navbar navbar-expand-md fixed-top p-0">
     <div id="navbarContainer" class="container-fluid">
-      <a id="navbarBrand" href="#">Logo</a>
+      <a id="navbarBrand" href="/">Logo</a>
       <button id="navbarTogglerButton" type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle Navigation">
         <i id="navbarTogglerIcon" class="fa-solid fa-bars"></i>
       </button>
@@ -44,25 +44,25 @@
           </div>
           <div class="col d-flex flex-column gap-3">
             <div class="d-flex w-100 justify-content-center">
-              <h5 class="card-title m-0"><%= formHeadline %></h5>
+              <h5 class="card-title m-0">{{formHeadline}}</h5>
             </div>
             <form id="contactForm" action="/contact.html" method="post">
               <fieldset form="contactForm" class="d-flex flex-column gap-4">
                 <div class="d-flex flex-column gap-1">
                   <label for="userNameTextInput">Name</label>
-                  <input id="userNameTextInput" type="text" class="form-control" placeholder="Input your full name" name="Username" aria-label="Username" autocomplete="on" required>
+                  <input id="userNameTextInput" type="text" class="form-control" placeholder="Input your full name" name="username" aria-label="Username" autocomplete="on" required>
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label for="userEmailTextInput">Email</label>
-                  <input id="userEmailTextInput" type="email" class="form-control" placeholder="Input your email" name="Email" aria-label="Email" autocomplete="on" required>
+                  <input id="userEmailTextInput" type="email" class="form-control" placeholder="Input your email" name="email" aria-label="Email" autocomplete="on" required>
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label for="userPhoneNumberTextInput">Phone Number</label>
-                  <input id="userPhoneNumberTextInput" type="tel" class="form-control" placeholder="e.g. +62123xxxxxxxx" name="Phone Number" aria-label="Phone Number" autocomplete="on" required>
+                  <input id="userPhoneNumberTextInput" type="tel" class="form-control" placeholder="e.g. +62123xxxxxxxx" name="phoneNumber" aria-label="Phone Number" autocomplete="on" required>
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label for="userSubjectSelectInput">Subject</label>
-                  <select id="userSubjectSelectInput" class="form-select" name="Subject" aria-label="Subject" autocomplete="on" required>
+                  <select id="userSubjectSelectInput" class="form-select" name="subject" aria-label="Subject" required>
                     <option value="">-- Please select a subject --</option>
                     <option value="Subject 01">Subject 01</option>
                     <option value="Subject 02">Subject 02</option>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="d-flex flex-column gap-1">
                   <label for="userMessageTextInput">Your Message</label>
-                  <textarea id="userMessageTextInput" class="form-control" placeholder="Write your message here..." name="Message" aria-label="Message" required></textarea>
+                  <textarea id="userMessageTextInput" class="form-control" placeholder="Write your message here..." name="message" aria-label="Message" required></textarea>
                 </div>
                 <div class="d-grid">
                   <button id="submitContactButton" type="submit" class="btn btn-primary fw-semibold mb-2">Submit</button>

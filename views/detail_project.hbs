@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Detail Page</title>
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <title>{{project.name}}</title>
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,57 +15,55 @@
 <body>
   <nav class="navbar navbar-expand-md fixed-top p-0">
     <div id="navbarContainer" class="container-fluid">
-      <a id="navbarBrand" href="#">Logo</a>
+      <a id="navbarBrand" href="/">Logo</a>
       <button id="navbarTogglerButton" type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle Navigation">
         <i id="navbarTogglerIcon" class="fa-solid fa-bars"></i>
       </button>
       <div id="navbarToggler" class="collapse navbar-collapse ms-md-5">
         <ul class="navbar-nav gap-1 mt-3 mt-md-0 mb-3 mb-md-0 me-auto">
           <li class="nav-item px-2 py-md-3">
-            <a href="/projects.html" class="nav-link">Projects</a>
+            <a href="/projects" class="nav-link">Projects</a>
           </li>
           <li class="nav-item px-2 py-md-3">
             <a href="/" class="nav-link">About</a>
           </li>
         </ul>
         <div class="d-flex mb-1 mb-md-0">
-          <a id="outlineButtonDark" href="/contact.html">Contact</a>
+          <a id="outlineButtonDark" href="/contact">Contact</a>
         </div>
       </div>
     </div>
   </nav>
   <section class="d-flex flex-column">
     <div id="projectCatalogContainer" class="container-fluid d-flex flex-column align-items-center gap-5 py-5">
-      <h5 id="projectName" class="fs-2 fw-semibold">Academic Information System</h5>
+      <h5 id="projectName" class="fs-2 fw-semibold">{{project.name}}</h5>
       <div class="row d-flex flex-column flex-lg-row gap-5 w-100 p-0">
         <div class="col-auto d-flex justify-content-center p-0">
-          <img id="projectDetailImage" src="/assets/images/sample_academic_information_system.png" alt="Project Image">
+          <img id="projectDetailImage" src="/{{project.imagePath}}" alt="Project Image">
         </div>
         <div class="col d-flex flex-column gap-5 p-0">
           <div class="d-flex flex-column gap-1">
             <h5 class="fs-4">Duration</h5>
             <div class="d-flex gap-2 align-items-center">
               <i class="fa-solid fa-calendar-days fs-5"></i>
-              <span id="projectDate" class="fs-5">12 Jan 2022 - 12 Mar 2022</span>
+              <span id="projectDate" class="fs-5">{{project.startDate}} - {{project.endDate}}</span>
             </div>
             <div class="d-flex gap-2 align-items-center">
               <i class="fa-solid fa-clock fs-5"></i>
-              <span id="projectDuration" class="fs-5">2 day(s)</span>
+              <span id="projectDuration" class="fs-5">{{project.duration}} day(s)</span>
             </div>
           </div>
           <div class="d-flex flex-column gap-1">
             <h5 class="fs-4">Technologies</h5>
             <div class="row p-0">
-              <span id="projectTechnologies" class="fs-5">React JS</span>
+              <span id="projectTechnologies" class="fs-5">{{project.technologies}}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="d-flex flex-column gap-1">
+      <div class="d-flex flex-column w-100 gap-1">
         <h5 class="fs-4">Description</h5>
-        <p id="projectDetailDescription">A web-based application for managing student data, class schedules, and grades. This system is designed with an easy-to-use admin dashboard. It allows administrators to efficiently register, update, and organize student information while also managing class timetables and academic records in a centralized platform. With its intuitive design, even users with minimal technical experience can easily navigate the system to perform daily academic tasks. <br>
-        To ensure a modern, reliable, and scalable solution, the application is developed using React.js for the frontend, delivering a responsive and interactive user experience. The backend is powered by Node.js, providing a fast, non-blocking, and event-driven environment for handling data processing and server-side operations. JavaScript serves as the primary programming language, enabling seamless integration between the client and server components. Additionally, the system is containerized using Docker, which simplifies deployment, enhances scalability, and ensures consistency across different environments. <br>
-        By integrating these technologies, the application not only reduces administrative workload but also improves accuracy in handling academic data, minimizes errors, and enhances the overall efficiency of institutional management. This combination of functionality and technology ensures that the system can adapt to the evolving needs of educational organizations while maintaining high performance and user accessibility.</p>
+        <p id="projectDetailDescription">{{project.description}}</p>
       </div>
     </div>
   </section>
@@ -74,7 +72,6 @@
       <p>Muhammad Rayhan Permana - 2025</p>
     </div>
   </footer>
-  <script src="/assets/js/detail_project.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
