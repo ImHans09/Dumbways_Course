@@ -1,5 +1,17 @@
 import express from 'express';
-import { submitProject, projects } from './assets/js/projects.js';
+import { submitProject } from './assets/js/projects.js';
+import { Pool } from 'pg';
+
+// Create pool connection for connecting to PostgreSQL
+const pool = new Pool({
+  user: 'postgres',
+  password: 'postgresql9',
+  host: 'localhost',
+  port: 5432,
+  database: 'portfolio_web_db',
+  max: 20,
+  connectionTimeoutMillis: 0
+})
 
 // Initialize Express application
 const app = express();
@@ -51,29 +63,39 @@ app.get('/', (req, res) => {
 });
 
 // Route to Projects Page
-app.get('/projects', (req, res) => {
+app.get('/projects', async (req, res) => {
+  const projects = await pool.query('SELECT id, name, year, duration_day, description, image_path, technologies FROM projects');
+  projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ') });
+
   const data = {
     title: 'Projects Page',
     formHeadline: 'Add new project',
     catalogHeadline: 'My Projects',
-    projects: projects
+    projects: projects.rows
   };
 
   res.render('projects', data);
 });
 
 // Route for processing add new project input
-app.post('/add-project', (req, res) => {
-  submitProject(req.body);
+app.post('/add-project', async (req, res) => {
+  const project = submitProject(req.body);
+  const query = 'INSERT INTO projects (name, year, start_date, end_date, duration_day, description, image_path, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)'
+  const values = [project.name, project.year, project.startDate, project.endDate, project.duration, project.description, project.imagePath, project.technologies]
+
+  await pool.query(query, values);
 
   res.redirect('projects');
 });
 
 // Route to Detail Project Page
-app.get('/detail-project/:id', (req, res) => {
-  const project = projects.find((project) => project.id === Number(req.params.id));
+app.get('/detail-project/:id', async (req, res) => {
+  const projects = await pool.query(`SELECT id, name, year, to_char(start_date, 'YYYY-MM-DD') AS start_date, to_char(end_date, 'YYYY-MM-DD') AS end_date, duration_day, description, image_path, technologies FROM projects WHERE id = ${req.params.id}`);
+  projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ')});
 
-  res.render('detail_project', { project });
+  const data = projects.rows[0];
+
+  res.render('detail_project', { data });
 });
 
 // Route to Contact Page

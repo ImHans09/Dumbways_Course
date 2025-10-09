@@ -11,32 +11,30 @@ function countProjectDuration(startDateString, endDateString) {
   return Math.round(projectDuration);
 }
 
-// Method for extracting project end time year
-function extractProjectEndTimeYear(endDateString) {
-  const endDate = new Date(endDateString);
+// Method for extracting project start year
+function extractProjectStartYear(startDateString) {
+  const startDate = new Date(startDateString);
 
-  return endDate.getFullYear();
+  return startDate.getFullYear();
 }
 
 // Method for submitting project
 function submitProject(reqBody) {
   const { name, startDate, endDate, description, technologies, imagePath } = reqBody;
   const duration = countProjectDuration(startDate, endDate);
-  const year = extractProjectEndTimeYear(endDate);
+  const year = extractProjectStartYear(startDate);
   const project = {
-    id: (projects.length > 0) ? projects[projects.length - 1].id + 1 : 1,
     name: name,
     year: year,
     startDate: startDate,
     endDate: endDate,
     duration: duration,
     description: description,
-    technologies: technologies.join(', '),
+    technologies: technologies,
     imagePath: "images/sample_academic_information_system.png"
   }
 
-  projects.push(project);
-  console.log(JSON.stringify(project));
+  return project;
 }
 
 // Project data (Dummy data)
