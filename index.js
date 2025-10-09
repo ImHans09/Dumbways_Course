@@ -1,6 +1,11 @@
+import bcrypt from 'bcrypt';
 import express from 'express';
-import { submitProject } from './assets/js/projects.js';
+import flash from 'connect-flash';
+import session from 'express-session';
+import isEmail from 'validator/lib/isEmail.js';
 import { Pool } from 'pg';
+import { submitProject } from './assets/js/projects.js';
+import { validatePhoneNumber } from './assets/js/register.js';
 
 // Create pool connection for connecting to PostgreSQL
 const pool = new Pool({
@@ -25,8 +30,14 @@ app.set('view engine', 'hbs');
 // Serve static files
 app.use(express.static('assets'));
 
-// Encoding request body content (body-parser)
+// Encode request body content (body-parser)
 app.use(express.urlencoded({ extended: false }));
+
+// Create session
+app.use(session({ secret: 'secretKey', resave: false, saveUninitialized: true, cookie: { secure: false, maxAge: 3600000 } }));
+
+// Use flash for alert messaging
+app.use(flash());
 
 // Route to About Page
 app.get('/', (req, res) => {
@@ -68,7 +79,7 @@ app.get('/projects', async (req, res) => {
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ') });
 
   const data = {
-    title: 'Projects Page',
+    title: 'My Previous Projects',
     formHeadline: 'Add new project',
     catalogHeadline: 'My Projects',
     projects: projects.rows
@@ -101,7 +112,7 @@ app.get('/detail-project/:id', async (req, res) => {
 // Route to Contact Page
 app.get('/contact', (req, res) => {
   const data = {
-    title: 'Contact Page',
+    title: 'Contact Me',
     formHeadline: 'Get in touch'
   };
 
@@ -114,6 +125,66 @@ app.post('/send-message', (req, res) => {
   console.log(`Name: ${messageData.username}\nEmail: ${messageData.email}\nPhone Number: ${messageData.phoneNumber}\nSubject: ${messageData.subject}\nMessage: ${messageData.message}`);
 
   res.redirect('contact');
+});
+
+// Route to Login Page
+app.get('/login', (req, res) => {
+  const data = {
+    title: 'Login to Your Account',
+    formHeadline: 'Login to your account'
+  };
+
+  res.render('login', data);
+});
+
+// Route to Register Page
+app.get('/register', (req, res) => {
+  const data = {
+    title: 'Register Your Account',
+    formHeadline: 'Create an account'
+  };
+  const alertMessage = req.flash('alertMessage')[0] || '';
+
+  res.render('register', { data: data, alertMessage: alertMessage });
+});
+
+// Route for registering user account
+app.post('/register-account', async (req, res) => {
+  const { firstName, lastName, email, phoneNumber, password, verifyPassword } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const registeredEmails = await pool.query('SELECT email FROM users WHERE email = $1', [email]);
+
+  if (!isEmail(email)) {
+    req.flash('alertMessage', 'Please use a valid email');
+    return res.redirect('register');
+  }
+
+  if (registeredEmails.rowCount > 0) {
+    req.flash('alertMessage', 'This email has been already registered');
+    return res.redirect('register');
+  }
+
+  if (!validatePhoneNumber(phoneNumber)) {
+    req.flash('alertMessage', 'Phone number is invalid');
+    return res.redirect('register');
+  }
+
+  if (password.length < 8) {
+    req.flash('alertMessage', 'Password must be 8 characters or more');
+    return res.redirect('register');
+  }
+
+  if (password !== verifyPassword) {
+    req.flash('alertMessage', 'Failed to verify password');
+    return res.redirect('register');
+  }
+
+  const query = 'INSERT INTO users (first_name, last_name, email, phone_number, password) VALUES ($1, $2, $3, $4, $5)';
+  const values = [firstName, lastName, email, phoneNumber, hashedPassword];
+
+  await pool.query(query, values);
+  
+  res.redirect('login');
 });
 
 // Run the application
