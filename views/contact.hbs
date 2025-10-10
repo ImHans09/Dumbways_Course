@@ -28,8 +28,13 @@
             <a href="/" class="nav-link">About</a>
           </li>
         </ul>
-        <div class="d-flex mb-1 mb-md-0">
-          <a id="outlineButtonDark" href="/login">Login</a>
+        <div class="d-flex align-items-center gap-4 mb-1 mb-md-0">
+          {{#if user}}
+            <span class="text-light" style="font-size: 20px;">{{user.lastName}}</span>
+            <a id="outlineButtonDark" href="/logout-account">Logout</a>
+          {{else}}
+            <a id="outlineButtonDark" href="/login">Login</a>
+          {{/if}}
         </div>
       </div>
     </div>

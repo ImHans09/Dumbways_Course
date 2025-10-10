@@ -67,8 +67,10 @@ app.get('/', (req, res) => {
     role: 'Fullstack Developer',
     imagePath: 'images/img_github_profile.jpg',
     summary: summary,
-    socials: socials
+    socials: socials,
+    user: req.session.user
   };
+  console.log(data.user);
 
   res.render('about', data);
 });
@@ -82,8 +84,10 @@ app.get('/projects', async (req, res) => {
     title: 'My Previous Projects',
     formHeadline: 'Add new project',
     catalogHeadline: 'My Projects',
-    projects: projects.rows
+    projects: projects.rows,
+    user: req.session.user
   };
+  console.log(data.user);
 
   res.render('projects', data);
 });
@@ -105,16 +109,19 @@ app.get('/detail-project/:id', async (req, res) => {
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ')});
 
   const data = projects.rows[0];
+  console.log(req.session.user);
 
-  res.render('detail_project', { data });
+  res.render('detail_project', { data: data, user: req.session.user });
 });
 
 // Route to Contact Page
 app.get('/contact', (req, res) => {
   const data = {
     title: 'Contact Me',
-    formHeadline: 'Get in touch'
+    formHeadline: 'Get in touch',
+    user: req.session.user
   };
+  console.log(data.user);
 
   res.render('contact', data)
 });
@@ -125,16 +132,6 @@ app.post('/send-message', (req, res) => {
   console.log(`Name: ${messageData.username}\nEmail: ${messageData.email}\nPhone Number: ${messageData.phoneNumber}\nSubject: ${messageData.subject}\nMessage: ${messageData.message}`);
 
   res.redirect('contact');
-});
-
-// Route to Login Page
-app.get('/login', (req, res) => {
-  const data = {
-    title: 'Login to Your Account',
-    formHeadline: 'Login to your account'
-  };
-
-  res.render('login', data);
 });
 
 // Route to Register Page
@@ -183,9 +180,56 @@ app.post('/register-account', async (req, res) => {
   const values = [firstName, lastName, email, phoneNumber, hashedPassword];
 
   await pool.query(query, values);
+  req.flash('successMessage', 'Account is created');
   
   res.redirect('login');
 });
+
+// Route to Login Page
+app.get('/login', (req, res) => {
+  const data = {
+    title: 'Login to Your Account',
+    formHeadline: 'Login to your account'
+  };
+  const successMessage = req.flash('successMessage')[0] || '';
+  const alertMessage = req.flash('alertMessage')[0] || '';
+
+  res.render('login', { data: data, successMessage: successMessage, alertMessage: alertMessage });
+});
+
+// Route for logging user account in
+app.post('/login-account', async (req, res) => {
+  const { email, password } = req.body;
+  const registeredAccounts = await pool.query('SELECT last_name, email, password FROM users WHERE email = $1', [email]);
+  const passwordMatched = await bcrypt.compare(password, registeredAccounts.rows[0].password);
+
+  if (registeredAccounts.rowCount === 0) {
+    req.flash('alertMessage', 'There is not registered account with this email');
+    return res.redirect('login');
+  }
+
+  if (!passwordMatched) {
+    req.flash('alertMessage', 'Password is incorrect');
+    return res.redirect('login');
+  }
+
+  req.session.user = { 
+    lastName: registeredAccounts.rows[0].last_name,
+    email: registeredAccounts.rows[0].email 
+  };
+  res.redirect('/');
+});
+
+// Route for logging user account out
+app.get('/logout-account', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Error destroying session: ', error);
+    }
+
+    res.redirect('login');
+  })
+})
 
 // Run the application
 app.listen(port, () => {
