@@ -5,7 +5,7 @@ import session from 'express-session';
 import isEmail from 'validator/lib/isEmail.js';
 import { Pool } from 'pg';
 import { submitProject } from './assets/js/projects.js';
-import { validatePhoneNumber } from './assets/js/register.js';
+import { validatePhoneNumber, truncateString } from './assets/js/register.js';
 
 // Create pool connection for connecting to PostgreSQL
 const pool = new Pool({
@@ -16,7 +16,7 @@ const pool = new Pool({
   database: 'portfolio_web_db',
   max: 20,
   connectionTimeoutMillis: 0
-})
+});
 
 // Initialize Express application
 const app = express();
@@ -60,6 +60,8 @@ app.get('/', (req, res) => {
       icon: 'fa-brands fa-square-x-twitter'
     }
   ];
+  const userLastName = req.session.user?.lastName || '';
+  const truncatedLastName = truncateString(userLastName, 16);
   const data = {
     title: 'Introduce Myself',
     headline: 'Hi! Welcome to my website',
@@ -68,9 +70,8 @@ app.get('/', (req, res) => {
     imagePath: 'images/img_github_profile.jpg',
     summary: summary,
     socials: socials,
-    user: req.session.user
+    userLastName: truncatedLastName
   };
-  console.log(data.user);
 
   res.render('about', data);
 });
@@ -80,14 +81,15 @@ app.get('/projects', async (req, res) => {
   const projects = await pool.query('SELECT id, name, year, duration_day, description, image_path, technologies FROM projects');
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ') });
 
+  const userLastName = req.session.user?.lastName || '';
+  const truncatedLastName = truncateString(userLastName, 16);
   const data = {
     title: 'My Previous Projects',
     formHeadline: 'Add new project',
     catalogHeadline: 'My Projects',
     projects: projects.rows,
-    user: req.session.user
+    userLastName: truncatedLastName
   };
-  console.log(data.user);
 
   res.render('projects', data);
 });
@@ -95,12 +97,22 @@ app.get('/projects', async (req, res) => {
 // Route for processing add new project input
 app.post('/add-project', async (req, res) => {
   const project = submitProject(req.body);
-  const query = 'INSERT INTO projects (name, year, start_date, end_date, duration_day, description, image_path, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)'
-  const values = [project.name, project.year, project.startDate, project.endDate, project.duration, project.description, project.imagePath, project.technologies]
 
-  await pool.query(query, values);
+  await pool.query(
+    'INSERT INTO projects (name, year, start_date, end_date, duration_day, description, image_path, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    [project.name, project.year, project.startDate, project.endDate, project.duration, project.description, project.imagePath, project.technologies]
+  );
 
   res.redirect('projects');
+});
+
+// Route for deleting project
+app.post('/delete-project/:id', async (req, res) => {
+  const projectId = req.params.id;
+
+  await pool.query('DELETE FROM projects WHERE id = $1', [projectId]);
+
+  res.redirect('/projects');
 });
 
 // Route to Detail Project Page
@@ -108,22 +120,28 @@ app.get('/detail-project/:id', async (req, res) => {
   const projects = await pool.query(`SELECT id, name, year, to_char(start_date, 'YYYY-MM-DD') AS start_date, to_char(end_date, 'YYYY-MM-DD') AS end_date, duration_day, description, image_path, technologies FROM projects WHERE id = ${req.params.id}`);
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ')});
 
-  const data = projects.rows[0];
-  console.log(req.session.user);
+  const userLastName = req.session.user?.lastName || '';
 
-  res.render('detail_project', { data: data, user: req.session.user });
+  if (!userLastName) {
+    res.redirect('/login');
+  }
+
+  const truncatedLastName = truncateString(userLastName, 16);
+
+  res.render('detail_project', { data: projects.rows[0], userLastName: truncatedLastName });
 });
 
 // Route to Contact Page
 app.get('/contact', (req, res) => {
+  const userLastName = req.session.user?.lastName || '';
+  const truncatedLastName = truncateString(userLastName, 16);
   const data = {
     title: 'Contact Me',
     formHeadline: 'Get in touch',
-    user: req.session.user
+    userLastName: truncatedLastName
   };
-  console.log(data.user);
 
-  res.render('contact', data)
+  res.render('contact', data);
 });
 
 // Route for sending message
@@ -175,11 +193,11 @@ app.post('/register-account', async (req, res) => {
     req.flash('alertMessage', 'Failed to verify password');
     return res.redirect('register');
   }
-
-  const query = 'INSERT INTO users (first_name, last_name, email, phone_number, password) VALUES ($1, $2, $3, $4, $5)';
-  const values = [firstName, lastName, email, phoneNumber, hashedPassword];
-
-  await pool.query(query, values);
+  
+  await pool.query(
+    'INSERT INTO users (first_name, last_name, email, phone_number, password) VALUES ($1, $2, $3, $4, $5)',
+    [firstName, lastName, email, phoneNumber, hashedPassword]
+  );
   req.flash('successMessage', 'Account is created');
   
   res.redirect('login');
@@ -201,12 +219,13 @@ app.get('/login', (req, res) => {
 app.post('/login-account', async (req, res) => {
   const { email, password } = req.body;
   const registeredAccounts = await pool.query('SELECT last_name, email, password FROM users WHERE email = $1', [email]);
-  const passwordMatched = await bcrypt.compare(password, registeredAccounts.rows[0].password);
 
   if (registeredAccounts.rowCount === 0) {
     req.flash('alertMessage', 'There is not registered account with this email');
     return res.redirect('login');
   }
+
+  const passwordMatched = await bcrypt.compare(password, registeredAccounts.rows[0].password);
 
   if (!passwordMatched) {
     req.flash('alertMessage', 'Password is incorrect');
@@ -217,6 +236,7 @@ app.post('/login-account', async (req, res) => {
     lastName: registeredAccounts.rows[0].last_name,
     email: registeredAccounts.rows[0].email 
   };
+
   res.redirect('/');
 });
 
@@ -228,8 +248,8 @@ app.get('/logout-account', (req, res) => {
     }
 
     res.redirect('login');
-  })
-})
+  });
+});
 
 // Run the application
 app.listen(port, () => {
