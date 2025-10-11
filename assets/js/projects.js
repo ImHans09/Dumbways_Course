@@ -19,10 +19,11 @@ function extractProjectStartYear(startDateString) {
 }
 
 // Method for submitting project
-function submitProject(reqBody) {
+function submitProject(reqBody, reqFile) {
   const { name, startDate, endDate, description, technologies, imagePath } = reqBody;
   const duration = countProjectDuration(startDate, endDate);
   const year = extractProjectStartYear(startDate);
+  const arrayTechonologies = Array.isArray(technologies) ? technologies : [technologies];
   const project = {
     name: name,
     year: year,
@@ -30,9 +31,9 @@ function submitProject(reqBody) {
     endDate: endDate,
     duration: duration,
     description: description,
-    technologies: technologies,
-    imagePath: "images/sample_academic_information_system.png"
-  }
+    technologies: arrayTechonologies,
+    imagePath: reqFile.filename
+  };
 
   return project;
 }

@@ -4,8 +4,10 @@ import flash from 'connect-flash';
 import session from 'express-session';
 import isEmail from 'validator/lib/isEmail.js';
 import { Pool } from 'pg';
+import { unlink } from 'fs';
 import { submitProject } from './assets/js/projects.js';
 import { validatePhoneNumber, truncateString } from './assets/js/register.js';
+import { upload } from './assets/js/utility.js';
 
 // Create pool connection for connecting to PostgreSQL
 const pool = new Pool({
@@ -78,7 +80,7 @@ app.get('/', (req, res) => {
 
 // Route to Projects Page
 app.get('/projects', async (req, res) => {
-  const projects = await pool.query('SELECT id, name, year, duration_day, description, image_path, technologies FROM projects');
+  const projects = await pool.query('SELECT id, name, year, duration_day, description, image_name, technologies FROM projects');
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ') });
 
   const userLastName = req.session.user?.lastName || '';
@@ -95,11 +97,11 @@ app.get('/projects', async (req, res) => {
 });
 
 // Route for processing add new project input
-app.post('/add-project', async (req, res) => {
-  const project = submitProject(req.body);
+app.post('/add-project', upload.single('projectImage'), async (req, res) => {
+  const project = submitProject(req.body, req.file);
 
   await pool.query(
-    'INSERT INTO projects (name, year, start_date, end_date, duration_day, description, image_path, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    'INSERT INTO projects (name, year, start_date, end_date, duration_day, description, image_name, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
     [project.name, project.year, project.startDate, project.endDate, project.duration, project.description, project.imagePath, project.technologies]
   );
 
@@ -108,22 +110,26 @@ app.post('/add-project', async (req, res) => {
 
 // Route for deleting project
 app.post('/delete-project/:id', async (req, res) => {
-  const projectId = req.params.id;
+  const project = await pool.query('SELECT * FROM projects WHERE id = $1', [req.params.id]);
+  console.log(project.rows[0].image_name);
 
-  await pool.query('DELETE FROM projects WHERE id = $1', [projectId]);
+  unlink(`assets/uploads/project_images/${project.rows[0].image_name}`, (err) => {
+    console.error('Error:', err);
+  });
+  await pool.query('DELETE FROM projects WHERE id = $1', [req.params.id]);
 
   res.redirect('/projects');
 });
 
 // Route to Detail Project Page
 app.get('/detail-project/:id', async (req, res) => {
-  const projects = await pool.query(`SELECT id, name, year, to_char(start_date, 'YYYY-MM-DD') AS start_date, to_char(end_date, 'YYYY-MM-DD') AS end_date, duration_day, description, image_path, technologies FROM projects WHERE id = ${req.params.id}`);
+  const projects = await pool.query("SELECT id, name, year, to_char(start_date, 'YYYY-MM-DD') AS start_date, to_char(end_date, 'YYYY-MM-DD') AS end_date, duration_day, description, image_name, technologies FROM projects WHERE id = $1", [req.params.id]);
   projects.rows.forEach((item) => { item.technologies = item.technologies.join(', ')});
 
   const userLastName = req.session.user?.lastName || '';
 
   if (!userLastName) {
-    res.redirect('/login');
+    return res.redirect('/login');
   }
 
   const truncatedLastName = truncateString(userLastName, 16);
@@ -247,7 +253,7 @@ app.get('/logout-account', (req, res) => {
       console.error('Error destroying session: ', error);
     }
 
-    res.redirect('login');
+    res.redirect('/');
   });
 });
 

@@ -230,13 +230,17 @@ section {
 }
 
 #contactForm label,
-#addProjectForm label {
+#addProjectForm label,
+#loginForm label,
+#registerForm label {
   font-size: 1.1rem;
 }
 
 #contactForm .form-control:focus,
 #contactForm .form-select:focus,
-#addProjectForm .form-control:focus {
+#addProjectForm .form-control:focus,
+#loginForm .form-control:focus,
+#registerForm .form-control:focus {
   box-shadow: none;
   border: 1px solid var(--dark);
 }
@@ -260,15 +264,28 @@ section {
 
 #projectCatalogContainer {
   background-color: var(--light);
+  flex: 1;
   padding: 0 1.2rem;
+  overflow-x: hidden;
 }
 
 #projectCatalogContainer h5 {
   margin: 0 0;
 }
 
+#projectCatalogContainer #captionEmptyImage {
+  font-size: 18px;
+  margin: 0 0;
+  padding: 0 0;
+}
+
 #projectCatalogContainer .row {
   padding: 0 10%;
+}
+
+#projectCard img {
+  object-fit: cover;
+  height: 250px;
 }
 
 #projectCard .card-title {
@@ -399,6 +416,10 @@ footer {
   #projectCatalogContainer .row {
     padding: 0 2%;
   }
+
+  #projectCard img {
+    height: 210px;
+  }
   
   #projectDetailImage {
     width: 35rem;
@@ -422,6 +443,10 @@ footer {
 
   #projectCatalogContainer {
     padding: 0 9.8rem;
+  }
+
+  #projectCard img {
+    height: 234px;
   }
 
   #footerContainer {
