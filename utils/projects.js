@@ -1,5 +1,3 @@
-export { submitProject, projects };
-
 // Method for counting project duration in day
 function countProjectDuration(startDateString, endDateString) {
   const startDate = new Date(startDateString);
@@ -37,6 +35,11 @@ function submitProject(reqBody, reqFile) {
 
   return project;
 }
+
+export { 
+  submitProject, 
+  projects 
+};
 
 // Project data (Dummy data)
 const projects = [

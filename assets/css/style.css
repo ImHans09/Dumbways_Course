@@ -318,6 +318,8 @@ section {
 }
 
 #projectDetailImage {
+  object-fit: cover;
+  height: 250px;
   width: 27rem;
 }
 
@@ -349,6 +351,8 @@ footer {
 
 @media (min-width: 576px) {
   #projectDetailImage {
+    object-fit: cover;
+    height: 270px;
     width: 32rem;
   }
 }
@@ -422,6 +426,8 @@ footer {
   }
   
   #projectDetailImage {
+    object-fit: cover;
+    height: 290px;
     width: 35rem;
   }
 
