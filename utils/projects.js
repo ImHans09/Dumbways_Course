@@ -18,10 +18,11 @@ function extractProjectStartYear(startDateString) {
 
 // Method for submitting project
 function submitProject(reqBody, reqFile) {
-  const { name, startDate, endDate, description, technologies, imagePath } = reqBody;
+  const { name, startDate, endDate, description, technologies } = reqBody;
   const duration = countProjectDuration(startDate, endDate);
   const year = extractProjectStartYear(startDate);
-  const arrayTechonologies = Array.isArray(technologies) ? technologies : [technologies];
+  const defaultTechnologies = 'Node JS';
+  const arrayTechonologies = Array.isArray(technologies) ? technologies : [defaultTechnologies];
   const project = {
     name: name,
     year: year,
