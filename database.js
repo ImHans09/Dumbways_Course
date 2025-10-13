@@ -1,14 +1,17 @@
+import dotenv from 'dotenv';
 import { Pool } from 'pg';
+
+// Set environment configuration
+dotenv.config();
 
 // Create pool connection for connecting to PostgreSQL
 const pool = new Pool({
-  user: 'postgres',
-  password: 'postgresql9',
-  host: 'localhost',
-  port: 5432,
-  database: 'portfolio_web_db',
-  max: 20,
-  connectionTimeoutMillis: 0
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  max: process.env.DB_MAX
 });
 
 export { pool };
