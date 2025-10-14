@@ -22,7 +22,8 @@ function submitProject(reqBody, reqFile) {
   const duration = countProjectDuration(startDate, endDate);
   const year = extractProjectStartYear(startDate);
   const defaultTechnologies = 'Node JS';
-  const arrayTechonologies = Array.isArray(technologies) ? technologies : [defaultTechnologies];
+  const technologiesValue = technologies ? technologies : defaultTechnologies;
+  const arrayTechonologies = Array.isArray(technologiesValue) ? technologiesValue : [technologiesValue];
   const project = {
     name: name,
     year: year,

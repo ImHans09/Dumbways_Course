@@ -200,17 +200,18 @@ function getRegisterPage(req, res) {
 async function registerUserAccount(req, res) {
   try {
     const { firstName, lastName, email, phoneNumber, password, verifyPassword } = req.body;
+
+    if (!isEmail(email)) {
+      req.flash('alertMessage', 'Please use a valid email');
+      return res.redirect('register');
+    }
+    
     const fetchUserEmailQuery = {
       name: 'fetch-user-email',
       text: 'SELECT email FROM users WHERE email = $1',
       values: [email]
     };
     const registeredEmails = await pool.query(fetchUserEmailQuery);
-
-    if (!isEmail(email)) {
-      req.flash('alertMessage', 'Please use a valid email');
-      return res.redirect('register');
-    }
 
     if (registeredEmails.rowCount > 0) {
       req.flash('alertMessage', 'This email has been already registered');

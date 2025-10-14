@@ -1,4 +1,5 @@
 .env
+.gitignore
 node_modules/*
 assets/uploads/project_images/*
 assets/uploads/user_images/*
